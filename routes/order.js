@@ -11,10 +11,10 @@ router.get('/', async(req, res) => {
 	const token = authorizationHeader.split(' ')[1];
 	jwt.verify(token, JWT_SECRET, async(err, data) => {
         try{
-            const item = await orders.find({customerId: data.id})
+            const item = await orders.find({customerId: data.id}).sort({createdAt:-1})
             .populate({
                 path: "items._id",
-                select: "name imageUrl"
+                select: "name imageUrl price"
               })
             res.json(item);
         }
